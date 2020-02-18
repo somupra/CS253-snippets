@@ -1,0 +1,95 @@
+.mode csv
+create table productlines(
+productLine varchar(50) primary key,
+textDescription varchar(150),
+htmlDesctiption varchar(150),
+image blob
+);
+.import CS253AcmeInc/productlines.csv productlines
+create table offices(
+officeCode int primary key,
+city varchar(50),
+phone varchar(20),
+addressLine1 varchar(100),
+addressLine2 varchar(100),
+state varchar(50),
+country varchar(50),
+postalCode varchar(30),
+territory varchar(50)
+);
+.import CS253AcmeInc/offices.csv offices
+create table products(
+productCode varchar(10) primary key,
+productName varchar(100),
+productLine varchar(50),
+productScale varchar(5),
+productVendor varchar(50),
+productDescription varchar(150),
+quantityInStock int,
+buyPrice real,
+MSRP real,
+foreign key (productLine) references productlines(productLine)
+);
+.import CS253AcmeInc/products.csv products
+create table employees(
+employeeNumber int primary key,
+lastName varchar(100),
+firstName varchar(100),
+extension varchar(50),
+email varchar(50),
+officeCode int,
+reportsTo int,
+jobTitle varchar(50),
+foreign key (officeCode) references offices(officeCode),
+foreign key (reportsTo) references employees(employeeNumber)
+);
+.import CS253AcmeInc/employees.csv employees
+create table customers(
+customerNumber int primary key,
+customerName varchar(100),
+contactLastName varchar(100),
+contactFirstName varchar(100),
+phone varchar(20),
+addressLine1 varchar(100),
+addressLine2 varchar(100),
+city varchar(20),
+state varchar(20),
+postalCode varchar(20),
+country varchar(20),
+salesRepEmployeeNumber int,
+creditLimit int,
+foreign key (salesRepEmployeeNumber) references employees(employeeNumber)
+);
+.import CS253AcmeInc/customers.csv customers
+create table orders(
+orderNumber int primary key,
+orderDate varchar(30),
+requiredDate varchar(30),
+shippingDate varchar(30),
+status varchar(20),
+comments varchar(150),
+customerNumber int,
+foreign key (customerNumber) references customers(customerNumber)
+);
+.import CS253AcmeInc/orders.csv orders
+create table payments(
+customerNumber int,
+checkNumber varchar(30),
+paymentDate varchar(30),
+amount real,
+primary key (customerNumber, checkNumber),
+foreign key (customerNumber) references customers(customerNumber)
+);
+.import CS253AcmeInc/payments.csv payments
+create table orderdetails(
+orderNumber int,
+productCode varchar(20),
+quantityOrdered int,
+priceEach real,
+orderLineNumber int,
+primary key (orderNumber, productCode),
+foreign key (orderNumber) references orders(orderNumber),
+foreign key (productCode) references orders(productCode)
+);
+.import CS253AcmeInc/orderdetails.csv orderdetails
+

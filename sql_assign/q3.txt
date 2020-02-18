@@ -1,0 +1,5 @@
+select * from customers where country=="Japan" or country=="France" or  country=="USA";
+select * from orderdetails where priceEach between 100 and 20;
+select status from orders where customerNumber == 124;
+select distinct(productName) from products where productLine=="Motorcycles";
+select lastName from employees where officeCode==4;
